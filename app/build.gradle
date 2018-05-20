@@ -1,27 +1,98 @@
 apply plugin: 'com.android.application'
 
+def SupportVer = '27.1.0'
+def RetrofitVer = '2.3.0'
+def OkHttpVer = '3.9.1'
+def StethoVer = '1.5.0'
+def RxJavaVer = '2.1.7'
+def RxAndroidVer = '2.0.1'
+def RxPermissionVer = '0.9.5'
+def FastAdapterVer = '3.0.4'
+def FastAdapterCommonVer = '3.0.3'
+def GsonVer = '2.8.2'
+def ItemAnimatorsVer = '1.0.0'
+def MaterializeVer = '1.1.2'
+def GlideVer = '4.4.0'
+def GlideTransformationsVer = '3.0.1'
+
 android {
     compileSdkVersion 27
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
     defaultConfig {
         applicationId "mihau.eu.githubsearch"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        versionName "1.0.0"
+
+        buildConfigField 'String', 'SERVER_URL', '"https://api.github.com/"'
     }
+
     buildTypes {
-        release {
+        dev {
+            debuggable true
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "ELPassion_Rachuba_" + variant.versionName + ".apk"
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    // Android
+    implementation "com.android.support:appcompat-v7:$SupportVer"
+    implementation "com.android.support:support-compat:$SupportVer"
+    implementation "com.android.support:support-core-utils:$SupportVer"
+    implementation "com.android.support:support-core-ui:$SupportVer"
+    implementation "com.android.support:support-fragment:$SupportVer"
+    implementation "com.android.support:support-annotations:$SupportVer"
+    implementation "com.android.support:support-annotations:$SupportVer"
+    implementation "com.android.support:support-vector-drawable:$SupportVer"
+    implementation "com.android.support:palette-v7:$SupportVer"
+    implementation "com.android.support:design:$SupportVer"
+    implementation "com.android.support:recyclerview-v7:$SupportVer"
+    implementation "com.android.support:cardview-v7:$SupportVer"
+    annotationProcessor "com.android.databinding:compiler:3.1.2"
+
+    // Squereup
+    implementation "com.squareup.retrofit2:retrofit:$RetrofitVer"
+    implementation "com.squareup.retrofit2:converter-gson:$RetrofitVer"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$RetrofitVer"
+    implementation "com.squareup.okhttp3:logging-interceptor:$OkHttpVer"
+    implementation "com.squareup.okhttp3:okhttp:$OkHttpVer"
+    implementation "com.facebook.stetho:stetho:$StethoVer"
+    implementation "com.facebook.stetho:stetho-okhttp3:$StethoVer"
+
+    // Google
+    implementation "com.google.code.gson:gson:$GsonVer"
+
+    // Rx
+    implementation "io.reactivex.rxjava2:rxandroid:$RxAndroidVer"
+    implementation "io.reactivex.rxjava2:rxjava:$RxJavaVer"
+    implementation "com.tbruyelle.rxpermissions2:rxpermissions:$RxPermissionVer@aar"
+
+    // Features
+    implementation "com.mikepenz:fastadapter:$FastAdapterVer@aar"
+    implementation "com.mikepenz:fastadapter-commons:$FastAdapterCommonVer@aar"
+    implementation "com.mikepenz:fastadapter-extensions:$FastAdapterCommonVer@aar"
+    implementation("com.mikepenz:materialize:$MaterializeVer@aar") { transitive = true }
+    implementation "com.mikepenz:itemanimators:$ItemAnimatorsVer@aar"
+    implementation "com.github.bumptech.glide:glide:$GlideVer"
+    annotationProcessor("com.github.bumptech.glide:compiler:$GlideVer")
+    implementation "jp.wasabeef:glide-transformations:$GlideTransformationsVer"
 }

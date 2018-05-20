@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="very_small_padding">4dp</dimen>
+    <dimen name="small_padding">6dp</dimen>
+    <dimen name="half_padding">10dp</dimen>
+    <dimen name="edit_text_padding">15dp</dimen>
+    <dimen name="default_padding">20dp</dimen>
+    <dimen name="double_padding">40dp</dimen>
+    <dimen name="triple_padding">60dp</dimen>
+    <dimen name="quarter_padding">80dp</dimen>
+
+    <dimen name="text_size_very_small">6sp</dimen>
+    <dimen name="text_size_smaller">8sp</dimen>
+    <dimen name="text_size_small">10sp</dimen>
+    <dimen name="text_size_normal">12sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="text_size_big">24sp</dimen>
+    <dimen name="text_size_bigger">30sp</dimen>
+    <dimen name="text_size_biggest">36sp</dimen>
+</resources>
