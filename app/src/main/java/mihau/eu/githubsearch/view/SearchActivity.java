@@ -20,6 +20,6 @@ public class SearchActivity extends BaseActivity {
 
     private void initDataBinding() {
         ActivitySearchBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
-        binding.setViewModel(new GitHubViewModel());
+        binding.setViewModel(new GitHubViewModel(this));
     }
 }
