@@ -12,7 +12,7 @@ import android.widget.EditText;
 
 import mihau.eu.githubsearch.R;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {

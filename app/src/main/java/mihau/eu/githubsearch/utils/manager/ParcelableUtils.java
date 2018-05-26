@@ -80,7 +80,7 @@ public class ParcelableUtils {
         }
     }
 
-    public static <T extends Parcelable> List<T>  readParcelableListHelper(Parcel in) {
+    public static <T extends Parcelable> List<T> readParcelableListHelper(Parcel in) {
         int size = in.readInt();
         if (size == 0) {
             return new ArrayList<>();

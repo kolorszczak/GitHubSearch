@@ -78,7 +78,7 @@ public class User implements Parcelable {
 
     @Override
     public int hashCode() {
-        return  6 * id + login.hashCode();
+        return 6 * id + login.hashCode();
     }
 
     @Override

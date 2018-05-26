@@ -18,7 +18,7 @@ public class Repository implements Parcelable {
     @SerializedName("owner")
     public Owner owner;
     @SerializedName("public ")
-    public Boolean isPublic ;
+    public Boolean isPublic;
     @SerializedName("html_url")
     public String htmlUrl;
     @SerializedName("description")
@@ -114,7 +114,7 @@ public class Repository implements Parcelable {
 
     @Override
     public int hashCode() {
-        return  5 * id + name.hashCode();
+        return 5 * id + name.hashCode();
     }
 
     @Override

@@ -54,7 +54,7 @@ public class Owner implements Parcelable {
 
     @Override
     public int hashCode() {
-        return  3 * id + login.hashCode();
+        return 3 * id + login.hashCode();
     }
 
     @Override

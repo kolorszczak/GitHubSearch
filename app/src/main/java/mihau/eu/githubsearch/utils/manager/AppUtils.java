@@ -17,7 +17,8 @@ public class AppUtils {
 
     /**
      * Method that is parsing throwable object into String error message
-     * @param context Context object
+     *
+     * @param context   Context object
      * @param throwable Throwable object
      * @return String message parsed from throwable
      */

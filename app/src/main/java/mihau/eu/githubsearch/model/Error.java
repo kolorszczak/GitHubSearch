@@ -36,7 +36,7 @@ public class Error implements Parcelable {
 
     @Override
     public int hashCode() {
-        return  2 * message.hashCode();
+        return 2 * message.hashCode();
     }
 
     @Override
