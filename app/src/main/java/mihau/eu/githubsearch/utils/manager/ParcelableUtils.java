@@ -21,18 +21,6 @@ public class ParcelableUtils {
         return isPresent ? in.readString() : null;
     }
 
-    public static void writeLongHelper(Parcel out, Long s) {
-        out.writeByte((byte) (s != null ? 1 : 0));
-        if (s != null) {
-            out.writeLong(s);
-        }
-    }
-
-    public static Long readLongHelper(Parcel in) {
-        boolean isPresent = in.readByte() == 1;
-        return isPresent ? in.readLong() : null;
-    }
-
     public static void writeIntegerHelper(Parcel out, Integer s) {
         out.writeByte((byte) (s != null ? 1 : 0));
         if (s != null) {
@@ -43,23 +31,6 @@ public class ParcelableUtils {
     public static Integer readIntegerHelper(Parcel in) {
         boolean isPresent = in.readByte() == 1;
         return isPresent ? in.readInt() : null;
-    }
-
-    public static void readListHelper(Parcel in, List list, Class c) {
-        boolean isPresent = in.readByte() == 1;
-        if (isPresent) {
-            if (list == null) {
-                list = new ArrayList();
-            }
-            in.readList(list, c.getClassLoader());
-        }
-    }
-
-    public static void writeListHelper(Parcel out, List s) {
-        out.writeByte((byte) (s != null ? 1 : 0));
-        if (s != null) {
-            out.writeList(s);
-        }
     }
 
     public static void writeDoubleHelper(Parcel out, Double s) {
@@ -74,18 +45,6 @@ public class ParcelableUtils {
         return isPresent ? in.readDouble() : null;
     }
 
-    public static void writeFloatHelper(Parcel out, Float s) {
-        out.writeByte((byte) (s != null ? 1 : 0));
-        if (s != null) {
-            out.writeFloat(s);
-        }
-    }
-
-    public static Float readFloatHelper(Parcel in) {
-        boolean isPresent = in.readByte() == 1;
-        return isPresent ? in.readFloat() : null;
-    }
-
     public static void writeBooleanHelper(Parcel out, boolean b) {
         if (b) {
             out.writeByte((byte) 1);
@@ -95,11 +54,7 @@ public class ParcelableUtils {
     }
 
     public static boolean readBooleanHelper(Parcel in) {
-        if (in.readByte() == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return in.readByte() == 1;
     }
 
     public static <T extends Parcelable> void writeParcelableHelper(Parcel out, T parcel, int flags) {

@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-def SupportVer = '27.1.0'
+def SupportVer = '27.1.1'
 def RetrofitVer = '2.3.0'
 def OkHttpVer = '3.9.1'
 def StethoVer = '1.5.0'

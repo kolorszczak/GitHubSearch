@@ -1,32 +1,30 @@
 package mihau.eu.githubsearch.view;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.os.Handler;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import mihau.eu.githubsearch.api.RestClient;
-import mihau.eu.githubsearch.utils.manager.ErrorUtils;
+import mihau.eu.githubsearch.R;
+import mihau.eu.githubsearch.base.BaseActivity;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     private static final String TAG = SplashActivity.class.getSimpleName();
 
-    @SuppressLint("CheckResult")
+    static final int SPLASH_TIME = 2000;
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RestClient.getInstance()
-                .searchRepositories("GitHubSearch???!@?#?!@#?@SAKDNJMAOKSDNASOJKDNJAUSD", "updated", "desc")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(repositoryResponse -> {
-                    Log.d(TAG, repositoryResponse.toString());
-                }, throwable -> {
-                    ErrorUtils.parseThrowable(SplashActivity.this, throwable);
-                });
+        DataBindingUtil.setContentView(this, R.layout.activity_splash);
+        openSearchActivity();
+    }
+
+    private void openSearchActivity() {
+        new Handler().postDelayed(() -> {
+            startActivity(new Intent(SplashActivity.this, SearchActivity.class));
+            finish();
+        }, SPLASH_TIME);
     }
 }

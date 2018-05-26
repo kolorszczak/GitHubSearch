@@ -31,6 +31,7 @@ public class AppUtils {
                         String json = responseBody.string().trim().replaceAll("\n", "").replaceAll("\r", "");
                         error = new Gson().fromJson(json, Error.class);
                     } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             }
