@@ -5,6 +5,11 @@ import android.databinding.BindingAdapter;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
 import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
@@ -56,5 +61,28 @@ public class DataBindingUtils {
     @BindingAdapter(value = {"itemDecoration"})
     public static void setItemDecoration(RecyclerView view, RecyclerView.ItemDecoration itemDecoration) {
         view.addItemDecoration(itemDecoration);
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    @BindingAdapter(value = {"url"})
+    public static void setUrl(WebView view, String url) {
+        WebSettings webSetting = view.getSettings();
+        webSetting.setJavaScriptEnabled(true);
+        webSetting.setDomStorageEnabled(true);
+        webSetting.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSetting.setAllowFileAccess(true);
+        webSetting.setAllowFileAccessFromFileURLs(true);
+        webSetting.setAllowUniversalAccessFromFileURLs(true);
+        webSetting.setBlockNetworkImage(false);
+
+        view.setWebChromeClient(new WebChromeClient());
+        view.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return false;
+            }
+        });
+
+        view.loadUrl(url);
     }
 }
