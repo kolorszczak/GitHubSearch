@@ -52,4 +52,9 @@ public class DataBindingUtils {
             }
         });
     }
+
+    @BindingAdapter(value = {"itemDecoration"})
+    public static void setItemDecoration(RecyclerView view, RecyclerView.ItemDecoration itemDecoration) {
+        view.addItemDecoration(itemDecoration);
+    }
 }

@@ -47,6 +47,7 @@
             android:overScrollMode="never"
             android:scrollbars="none"
             app:adapter="@{viewModel.fastAdapter}"
+            app:itemDecoration="@{viewModel.itemDecoration}"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:paging="@{viewModel}"
