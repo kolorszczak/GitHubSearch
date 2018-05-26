@@ -20,6 +20,7 @@ public class GitHubViewModel {
 
     private static final String TAG = GitHubViewModel.class.getSimpleName();
 
+    public Events events;
     public ObservableField<String> keyword = new ObservableField<>();
     public ObservableLong userTotal = new ObservableLong(0L);
     public ObservableLong repositoryTotal = new ObservableLong(0L);
@@ -32,6 +33,7 @@ public class GitHubViewModel {
     public ItemAdapter<ProgressItem> footerAdapter;
 
     public GitHubViewModel(Context context) {
+        this.events = new Events(context, this);
         setupAdapters(context);
     }
 
