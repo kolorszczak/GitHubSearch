@@ -1,19 +1,17 @@
 apply plugin: 'com.android.application'
 
 def SupportVer = '27.1.1'
-def RetrofitVer = '2.3.0'
-def OkHttpVer = '3.9.1'
+def RetrofitVer = '2.4.0'
+def OkHttpVer = '3.10.0'
 def StethoVer = '1.5.0'
-def RxJavaVer = '2.1.7'
-def RxAndroidVer = '2.0.1'
+def RxJavaVer = '2.1.14'
+def RxAndroidVer = '2.0.2'
 def RxPermissionVer = '0.9.5'
-def FastAdapterVer = '3.0.4'
-def FastAdapterCommonVer = '3.0.3'
-def GsonVer = '2.8.2'
-def ItemAnimatorsVer = '1.0.0'
+def FastAdapterVer = '3.2.5'
+def GsonVer = '2.8.5'
 def MaterializeVer = '1.1.2'
-def GlideVer = '4.4.0'
-def GlideTransformationsVer = '3.0.1'
+def GlideVer = '4.7.1'
+def GlideTransformationsVer = '3.3.0'
 
 android {
     compileSdkVersion 27
@@ -33,6 +31,8 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0.0"
+        renderscriptTargetApi 27
+        renderscriptSupportModeEnabled true
 
         buildConfigField 'String', 'SERVER_URL', '"https://api.github.com/"'
     }
@@ -88,10 +88,9 @@ dependencies {
 
     // Features
     implementation "com.mikepenz:fastadapter:$FastAdapterVer@aar"
-    implementation "com.mikepenz:fastadapter-commons:$FastAdapterCommonVer@aar"
-    implementation "com.mikepenz:fastadapter-extensions:$FastAdapterCommonVer@aar"
+    implementation "com.mikepenz:fastadapter-commons:$FastAdapterVer@aar"
+    implementation "com.mikepenz:fastadapter-extensions:$FastAdapterVer@aar"
     implementation("com.mikepenz:materialize:$MaterializeVer@aar") { transitive = true }
-    implementation "com.mikepenz:itemanimators:$ItemAnimatorsVer@aar"
     implementation "com.github.bumptech.glide:glide:$GlideVer"
     annotationProcessor("com.github.bumptech.glide:compiler:$GlideVer")
     implementation "jp.wasabeef:glide-transformations:$GlideTransformationsVer"

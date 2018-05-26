@@ -3,7 +3,6 @@ package mihau.eu.githubsearch.viewmodel;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.util.Log;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -54,7 +53,6 @@ public class Events {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(searchItem -> {
-                    Log.d(TAG, "Item: " + searchItem.getIdentifier());
                     viewModel.itemAdapter.add(searchItem);
                 }, throwable -> {
                     new AlertDialog.Builder(context)

@@ -43,7 +43,7 @@ public class SearchItem extends AbstractItem<SearchItem, SearchItem.ViewHolder> 
     public void bindView(@NonNull SearchItem.ViewHolder holder, @NonNull List<Object> payloads) {
         super.bindView(holder, payloads);
         holder.binding.setName(repository == null ? user.login : repository.name);
-        holder.binding.setTitle(repository == null ? getString(holder, R.string.repository) : getString(holder, R.string.user));
+        holder.binding.setTitle(repository == null ? getString(holder, R.string.user) : getString(holder, R.string.repository));
     }
 
     @Override
