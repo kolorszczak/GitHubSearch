@@ -12,4 +12,6 @@ public interface APIService {
     @GET("search/repositories")
     Observable<Response<Repository>> searchRepositories(@Query("q") String keywords, @Query("page") Integer page);
 
+    @GET("search/users")
+    Observable<Response<User>> searchUsers(@Query("q") String keywords, @Query("page") Integer page);
 }
