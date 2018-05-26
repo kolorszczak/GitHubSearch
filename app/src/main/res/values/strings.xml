@@ -2,4 +2,6 @@
     <string name="app_name">GitHub Search</string>
     <string name="noInternetConnection">No internet connection</string>
     <string name="serverError">Server error</string>
+    <string name="repository">Repository</string>
+    <string name="user">User</string>
 </resources>
