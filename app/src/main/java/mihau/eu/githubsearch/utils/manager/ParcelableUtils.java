@@ -1,10 +1,14 @@
 package mihau.eu.githubsearch.utils.manager;
 
 import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParcelableUtils {
 
-    //region String
+
     public static void writeStringHelper(Parcel out, String s) {
         out.writeByte((byte) (s != null ? 1 : 0));
         if (s != null) {
@@ -16,9 +20,7 @@ public class ParcelableUtils {
         boolean isPresent = in.readByte() == 1;
         return isPresent ? in.readString() : null;
     }
-    //endregion
 
-    //region Long
     public static void writeLongHelper(Parcel out, Long s) {
         out.writeByte((byte) (s != null ? 1 : 0));
         if (s != null) {
@@ -30,9 +32,36 @@ public class ParcelableUtils {
         boolean isPresent = in.readByte() == 1;
         return isPresent ? in.readLong() : null;
     }
-    //endregion
 
-    //region Double
+    public static void writeIntegerHelper(Parcel out, Integer s) {
+        out.writeByte((byte) (s != null ? 1 : 0));
+        if (s != null) {
+            out.writeInt(s);
+        }
+    }
+
+    public static Integer readIntegerHelper(Parcel in) {
+        boolean isPresent = in.readByte() == 1;
+        return isPresent ? in.readInt() : null;
+    }
+
+    public static void readListHelper(Parcel in, List list, Class c) {
+        boolean isPresent = in.readByte() == 1;
+        if (isPresent) {
+            if (list == null) {
+                list = new ArrayList();
+            }
+            in.readList(list, c.getClassLoader());
+        }
+    }
+
+    public static void writeListHelper(Parcel out, List s) {
+        out.writeByte((byte) (s != null ? 1 : 0));
+        if (s != null) {
+            out.writeList(s);
+        }
+    }
+
     public static void writeDoubleHelper(Parcel out, Double s) {
         out.writeByte((byte) (s != null ? 1 : 0));
         if (s != null) {
@@ -44,9 +73,7 @@ public class ParcelableUtils {
         boolean isPresent = in.readByte() == 1;
         return isPresent ? in.readDouble() : null;
     }
-    //endregion
 
-    //region Float
     public static void writeFloatHelper(Parcel out, Float s) {
         out.writeByte((byte) (s != null ? 1 : 0));
         if (s != null) {
@@ -58,9 +85,7 @@ public class ParcelableUtils {
         boolean isPresent = in.readByte() == 1;
         return isPresent ? in.readFloat() : null;
     }
-    //endregion
 
-    //region Boolean
     public static void writeBooleanHelper(Parcel out, boolean b) {
         if (b) {
             out.writeByte((byte) 1);
@@ -76,5 +101,39 @@ public class ParcelableUtils {
             return false;
         }
     }
-    //endregion
+
+    public static <T extends Parcelable> void writeParcelableHelper(Parcel out, T parcel, int flags) {
+        out.writeByte((byte) (parcel != null ? 1 : 0));
+        if (parcel != null) {
+            out.writeParcelable(parcel, flags);
+        }
+    }
+
+    public static <T extends Parcelable> T readParcelableHelper(Parcel in, Class c) {
+        boolean isPresent = in.readByte() == 1;
+        return isPresent ? in.readParcelable(c.getClassLoader()) : null;
+    }
+
+    public static <T extends Parcelable> void writeParcelableListHelper(Parcel out, List<T> list) {
+        if (list == null || list.size() == 0)
+            out.writeInt(0);
+        else {
+            out.writeInt(list.size());
+            final Class<?> objectsType = list.get(0).getClass();
+            out.writeSerializable(objectsType);
+            out.writeList(list);
+        }
+    }
+
+    public static <T extends Parcelable> List<T>  readParcelableListHelper(Parcel in) {
+        int size = in.readInt();
+        if (size == 0) {
+            return new ArrayList<>();
+        } else {
+            Class<?> type = (Class<?>) in.readSerializable();
+            List<T> list = new ArrayList<>(size);
+            in.readList(list, type.getClassLoader());
+            return list;
+        }
+    }
 }
