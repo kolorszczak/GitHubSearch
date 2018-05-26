@@ -30,7 +30,6 @@ public class DataBindingUtils {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
-                    viewModel.itemAdapter.clear();
                     viewModel.events.search(s);
                 });
 
@@ -39,5 +38,18 @@ public class DataBindingUtils {
             viewModel.clear();
             view.setQuery("", false);
         }));
+    }
+
+    @BindingAdapter(value = {"paging"})
+    public static void setPaging(RecyclerView view, GitHubViewModel viewModel) {
+        view.addOnScrollListener(new EndlessRecyclerOnScrollListener(viewModel.footerAdapter) {
+
+            @Override
+            public void onLoadMore(int currentPage) {
+                if (!viewModel.isLoading.get() && currentPage * 30 < viewModel.userTotal.get() + viewModel.repositoryTotal.get()) {
+                    new Handler().post(() -> viewModel.events.search(viewModel.keyword.get()));
+                }
+            }
+        });
     }
 }

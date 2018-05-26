@@ -49,6 +49,7 @@
             app:adapter="@{viewModel.fastAdapter}"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:paging="@{viewModel}"
             tools:listitem="@layout/item_search"/>
     </android.support.design.widget.CoordinatorLayout>
 

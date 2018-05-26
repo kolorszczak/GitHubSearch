@@ -39,7 +39,7 @@ public class Events {
         viewModel.keyword.set(keyword);
 
         if (viewModel.currentRepositoryPage == 1 && viewModel.currentUserPage == 1) {
-            viewModel.clear();
+            viewModel.itemAdapter.clear();
         }
 
         Observable

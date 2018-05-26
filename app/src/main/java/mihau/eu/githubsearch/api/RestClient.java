@@ -34,7 +34,6 @@ public class RestClient {
 
                     Request request = original.newBuilder()
                             .header("Content-Type", "application/json")
-                            .header("Authorization", "cmFjaHViYS5taWNoYWxAZ21haWwuY29t")
                             .header("Accept", "*/*").build();
                     return chain.proceed(request);
                 });
