@@ -1,5 +1,6 @@
 package mihau.eu.githubsearch.base;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
@@ -25,10 +26,18 @@ public abstract class BaseActivity extends AppCompatActivity {
 
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                if (!imm.hideSoftInputFromWindow(view.getWindowToken(), 0)) {
+                    new AlertDialog.Builder(this)
+                            .setTitle(getString(R.string.confirmQuit))
+                            .setMessage(R.string.confirmQuitContent)
+                            .setPositiveButton(R.string.quit, (dialogInterface, i) -> {
+                                dialogInterface.dismiss();
+                                finish();
+                            })
+                            .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss()).show();
+                }
             }
         }
-        super.onBackPressed();
     }
 
     private View findViewAt(ViewGroup viewGroup, int x, int y) {

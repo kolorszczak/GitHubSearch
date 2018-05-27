@@ -1,9 +1,15 @@
 <resources>
     <string name="app_name">GitHub Search</string>
-    <string name="noInternetConnection">No internet connection</string>
-    <string name="serverError">Server error</string>
     <string name="repository">Repository</string>
     <string name="user">User</string>
     <string name="hint_search">Type keyword here</string>
+
+    <!--Dialog alerts-->
+    <string name="confirmQuit">Confirm Quit</string>
+    <string name="confirmQuitContent">Do you really want to quit?</string>
     <string name="error">Error</string>
+    <string name="noInternetConnection">No internet connection</string>
+    <string name="serverError">Server error</string>
+    <string name="quit">Quit</string>
+    <string name="cancel">Cancel</string>
 </resources>
