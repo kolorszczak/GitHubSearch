@@ -3,6 +3,7 @@ package mihau.eu.githubsearch.viewmodel;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -35,6 +36,7 @@ public class Events {
         }
 
         viewModel.isLoading.set(true);
+        viewModel.isError.set(false);
         viewModel.keyword.set(keyword);
 
         if (viewModel.currentRepositoryPage == 1 && viewModel.currentUserPage == 1) {
@@ -55,10 +57,22 @@ public class Events {
                 .subscribe(searchItem -> {
                     viewModel.itemAdapter.add(searchItem);
                 }, throwable -> {
+                    if (AppUtils.parseCode(context, throwable) == 503) {
+                        viewModel.error.set(context.getString(R.string.noInternet));
+                        viewModel.errorImg.set(ContextCompat.getDrawable(context, R.drawable.im_internet));
+                        viewModel.isError.set(true);
+                    } else if (viewModel.currentRepositoryPage == 1 && viewModel.currentUserPage == 1 && AppUtils.parseCode(context, throwable) >= 400) {
+                        viewModel.error.set(context.getString(R.string.emptyContent));
+                        viewModel.errorImg.set(ContextCompat.getDrawable(context, R.drawable.im_empty));
+                        viewModel.isError.set(true);
+                    }
+
                     new AlertDialog.Builder(context)
                             .setTitle(context.getString(R.string.error))
-                            .setMessage(AppUtils.parseThrowable(context, throwable)).show();
-                }, () -> {
+                            .setMessage(AppUtils.parseMessage(context, throwable)).show();
+                }, () ->
+
+                {
                     viewModel.isLoading.set(false);
                     viewModel.currentUserPage++;
                     viewModel.currentRepositoryPage++;

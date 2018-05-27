@@ -3,6 +3,8 @@
     <string name="repository">Repository</string>
     <string name="user">User</string>
     <string name="hint_search">Type keyword here</string>
+    <string name="emptyContent">It seems like search results are empty!</string>
+    <string name="noInternet">It seems like your internet connection is down!</string>
 
     <!--Dialog alerts-->
     <string name="confirmQuit">Confirm Quit</string>

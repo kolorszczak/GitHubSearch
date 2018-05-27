@@ -22,7 +22,7 @@ public class AppUtils {
      * @param throwable Throwable object
      * @return String message parsed from throwable
      */
-    public static String parseThrowable(Context context, Throwable throwable) {
+    public static String parseMessage(Context context, Throwable throwable) {
         Error error = new Error(context, R.string.serverError);
         if (throwable instanceof HttpException) {
             if (((HttpException) throwable).response().code() < 500) {
@@ -40,5 +40,22 @@ public class AppUtils {
             error = new Error(context, R.string.noInternetConnection);
         }
         return error.message;
+    }
+
+    /**
+     * Method that is parsing throwable object into Integer error code
+     *
+     * @param context   Context object
+     * @param throwable Throwable object
+     * @return Error code parsed from throwable
+     */
+    public static Integer parseCode(Context context, Throwable throwable) {
+        Error error = new Error(context, R.string.serverError);
+        if (throwable instanceof HttpException) {
+            return ((HttpException) throwable).response().code();
+        } else if (throwable instanceof UnknownHostException || throwable instanceof SocketTimeoutException) {
+            return 503;
+        }
+        return 500;
     }
 }
