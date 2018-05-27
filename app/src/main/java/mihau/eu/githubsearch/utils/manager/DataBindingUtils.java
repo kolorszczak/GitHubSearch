@@ -3,6 +3,7 @@ package mihau.eu.githubsearch.utils.manager;
 import android.annotation.SuppressLint;
 import android.databinding.BindingAdapter;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.webkit.WebChromeClient;
@@ -11,9 +12,13 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
 
+import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -84,5 +89,28 @@ public class DataBindingUtils {
         });
 
         view.loadUrl(url);
+    }
+
+    @BindingAdapter(value = {"image"})
+    public static void setImage(ImageView view, String url) {
+        Glide.with(view)
+                .load(url)
+                .apply(new RequestOptions()
+                        .error(ContextCompat.getDrawable(view.getContext(), R.drawable.ic_error))
+                        .placeholder(ContextCompat.getDrawable(view.getContext(), R.drawable.ic_wait))
+                        .fitCenter())
+                .into(view);
+    }
+
+    @BindingAdapter("android:text")
+    public static void setDouble(TextView view, Double value) {
+        if (value == null)
+            return;
+        DecimalFormat df = new DecimalFormat("#.#");
+        if (Double.isNaN(value)) {
+            view.setText("");
+        } else {
+            view.setText(df.format(value));
+        }
     }
 }

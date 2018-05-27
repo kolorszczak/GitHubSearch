@@ -1,7 +1,6 @@
 package mihau.eu.githubsearch.utils.list.item;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -42,17 +41,13 @@ public class SearchItem extends AbstractItem<SearchItem, SearchItem.ViewHolder> 
     @Override
     public void bindView(@NonNull SearchItem.ViewHolder holder, @NonNull List<Object> payloads) {
         super.bindView(holder, payloads);
-        holder.binding.setName(repository == null ? user.login : repository.name);
-        holder.binding.setTitle(repository == null ? getString(holder, R.string.user) : getString(holder, R.string.repository));
+            holder.binding.setRepository(repository);
+            holder.binding.setUser(user);
     }
 
     @Override
     public long getIdentifier() {
         return repository == null ? user.id : repository.id;
-    }
-
-    private String getString(SearchItem.ViewHolder holder, @StringRes int string) {
-        return holder.itemView.getContext().getString(string);
     }
 
     @Override
@@ -66,7 +61,7 @@ public class SearchItem extends AbstractItem<SearchItem, SearchItem.ViewHolder> 
 
         ViewHolder(View view) {
             super(view);
-            binding = ItemSearchBinding.bind(itemView);
+                binding = ItemSearchBinding.bind(itemView);
         }
     }
 }
