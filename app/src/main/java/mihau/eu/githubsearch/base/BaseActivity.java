@@ -23,10 +23,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (view instanceof EditText) {
                 view.clearFocus();
             }
-
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
-                if (!imm.hideSoftInputFromWindow(view.getWindowToken(), 0)) {
+                if (!imm.hideSoftInputFromWindow(view.getWindowToken(), 0) && isTaskRoot()) {
                     new AlertDialog.Builder(this)
                             .setTitle(getString(R.string.confirmQuit))
                             .setMessage(R.string.confirmQuitContent)
@@ -35,8 +34,23 @@ public abstract class BaseActivity extends AppCompatActivity {
                                 finish();
                             })
                             .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss()).show();
+                } else {
+                    super.onBackPressed();
                 }
+            } else {
+                super.onBackPressed();
             }
+        } else if (isTaskRoot()) {
+            new AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.confirmQuit))
+                    .setMessage(R.string.confirmQuitContent)
+                    .setPositiveButton(R.string.quit, (dialogInterface, i) -> {
+                        dialogInterface.dismiss();
+                        finish();
+                    })
+                    .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss()).show();
+        } else {
+            super.onBackPressed();
         }
     }
 
