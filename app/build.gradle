@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 def SupportVer = '27.1.1'
 def RetrofitVer = '2.4.0'
@@ -51,6 +54,10 @@ android {
     }
 }
 
+androidExtensions {
+    experimental = true
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
@@ -94,4 +101,5 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$GlideVer"
     annotationProcessor("com.github.bumptech.glide:compiler:$GlideVer")
     implementation "jp.wasabeef:glide-transformations:$GlideTransformationsVer"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
