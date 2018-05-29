@@ -18,11 +18,6 @@ public class DescriptionActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = getIntent().getParcelableExtra("user");
-        initDataBinding();
-
-    }
-
-    private void initDataBinding() {
         ActivityDescriptionBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_description);
         binding.setUser(user);
     }

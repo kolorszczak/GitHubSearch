@@ -1,13 +1,13 @@
 package mihau.eu.githubsearch.utils.list;
 
+import com.mikepenz.fastadapter.items.AbstractItem;
+
 import java.io.Serializable;
 import java.util.Comparator;
 
-import mihau.eu.githubsearch.utils.list.item.SearchItem;
-
-public class AscendingComparator implements Comparator<SearchItem>, Serializable {
+public class AscendingComparator implements Comparator<AbstractItem>, Serializable {
     @Override
-    public int compare(SearchItem lhs, SearchItem rhs) {
+    public int compare(AbstractItem lhs, AbstractItem rhs) {
         return Long.compare(lhs.getIdentifier(), rhs.getIdentifier());
     }
 }

@@ -24,12 +24,12 @@
 
         <activity
             android:name=".view.SearchActivity"
-            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="sensorPortrait"/>
 
         <activity
             android:name=".view.DescriptionActivity"
-            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="sensorPortrait"/>
     </application>
 </manifest>

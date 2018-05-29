@@ -19,38 +19,46 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onBackPressed() {
         // Check if no view has focus:
         View view = this.getCurrentFocus();
-        if (view != null) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (view != null && imm != null
+                && !imm.hideSoftInputFromWindow(view.getWindowToken(), 0) && isTaskRoot()) {
             if (view instanceof EditText) {
                 view.clearFocus();
             }
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                if (!imm.hideSoftInputFromWindow(view.getWindowToken(), 0) && isTaskRoot()) {
-                    new AlertDialog.Builder(this)
-                            .setTitle(getString(R.string.confirmQuit))
-                            .setMessage(R.string.confirmQuitContent)
-                            .setPositiveButton(R.string.quit, (dialogInterface, i) -> {
-                                dialogInterface.dismiss();
-                                finish();
-                            })
-                            .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss()).show();
-                } else {
-                    super.onBackPressed();
-                }
-            } else {
-                super.onBackPressed();
-            }
+            showExitDialog();
         } else if (isTaskRoot()) {
-            new AlertDialog.Builder(this)
-                    .setTitle(getString(R.string.confirmQuit))
-                    .setMessage(R.string.confirmQuitContent)
-                    .setPositiveButton(R.string.quit, (dialogInterface, i) -> {
-                        dialogInterface.dismiss();
-                        finish();
-                    })
-                    .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss()).show();
+            showExitDialog();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        hideKeyboard(event, getCurrentFocus());
+        return super.dispatchTouchEvent(event);
+    }
+
+    private void hideKeyboard(MotionEvent event, View currentFocus) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (currentFocus instanceof EditText || currentFocus instanceof SearchView) {
+                Rect outRect = new Rect();
+                currentFocus.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                    // clear focus on currently focused view if clicked outside
+                    currentFocus.clearFocus();
+
+                    View newFocus = findViewAt(findViewById(R.id.coordinator), (int) event.getRawX(), (int) event.getRawY());
+                    // hide keyboard if newly focused view is not keyboard owner
+                    if (newFocus == null || !(newFocus instanceof EditText || currentFocus instanceof SearchView)) {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        if (imm != null) {
+                            imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -75,27 +83,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         return null;
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if (v instanceof EditText || v instanceof SearchView) {
-                Rect outRect = new Rect();
-                v.getGlobalVisibleRect(outRect);
-                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
-                    v.clearFocus();
-
-                    View newFocus = findViewAt(findViewById(R.id.coordinator), (int) event.getRawX(), (int) event.getRawY());
-
-                    if (newFocus == null || !(newFocus instanceof EditText)) {
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        if (imm != null) {
-                            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                        }
-                    }
-                }
-            }
-        }
-        return super.dispatchTouchEvent(event);
+    private void showExitDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.confirmQuit))
+                .setMessage(R.string.confirmQuitContent)
+                .setPositiveButton(R.string.quit, (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    finish();
+                })
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss()).show();
     }
 }
