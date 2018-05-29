@@ -15,6 +15,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/drawable_launch_screen</item>
+    </style>
+
+
     <style name="ImageView">
         <item name="android:adjustViewBounds">true</item>
         <item name="android:scaleType">fitCenter</item>

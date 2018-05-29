@@ -13,19 +13,15 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".view.SplashActivity"
-            android:configChanges="orientation|keyboardHidden|locale"
+            android:name=".view.SearchActivity"
+            android:theme="@style/AppTheme.Launcher"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".view.SearchActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:screenOrientation="sensorPortrait"/>
 
         <activity
             android:name=".view.DescriptionActivity"

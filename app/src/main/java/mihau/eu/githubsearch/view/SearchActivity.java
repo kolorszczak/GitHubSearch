@@ -50,6 +50,7 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         ActivitySearchBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
         viewModel = new GitHubViewModel(new AppResourcesProvider(this));
