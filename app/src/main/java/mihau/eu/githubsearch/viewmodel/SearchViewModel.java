@@ -33,11 +33,11 @@ public class SearchViewModel extends ViewModel {
     public ObservableField<String> error = new ObservableField<>();
     public ObservableInt errorImgResId = new ObservableInt();
 
-    public ObservableLong userTotal = new ObservableLong(0L);
-    public ObservableLong repositoryTotal = new ObservableLong(0L);
-    public ObservableBoolean isLoading = new ObservableBoolean(false);
-    public Integer currentUserPage = 1;
-    public Integer currentRepositoryPage = 1;
+    public ObservableLong userTotal = new ObservableLong();
+    public ObservableLong repositoryTotal = new ObservableLong();
+    public ObservableBoolean isLoading = new ObservableBoolean();
+    public Integer currentUserPage;
+    public Integer currentRepositoryPage;
 
     public PublishSubject<SearchEvent> searchEventPublishSubject = PublishSubject.create();
 
@@ -51,9 +51,15 @@ public class SearchViewModel extends ViewModel {
         this.gitHubRepository = gitHubRepository;
         this.resourcesProvider = resourcesProvider;
         this.isError.set(true);
+        this.isLoading.set(false);
         this.keyword.set("");
+        this.userTotal.set(0L);
+        this.repositoryTotal.set(0L);
         this.error.set(resourcesProvider.getString(R.string.emptyContent));
         this.errorImgResId.set(R.drawable.im_empty);
+
+        currentUserPage = 1;
+        currentRepositoryPage = 1;
     }
 
     @SuppressWarnings("unchecked")

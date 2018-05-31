@@ -14,4 +14,6 @@
     <string name="serverError">Server error</string>
     <string name="quit">Quit</string>
     <string name="cancel">Cancel</string>
+    <string name="followers">Followers count:</string>
+    <string name="publicRepos">Public repositories count:</string>
 </resources>

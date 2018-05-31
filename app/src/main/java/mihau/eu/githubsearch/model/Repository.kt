@@ -8,7 +8,7 @@ data class Repository(
         val name: String,
         val id: Int,
         val fullName: String,
-        val owner: Owner,
+        val owner: User,
         val isPublic: Boolean,
         val htmlUrl: String,
         val description: String,

@@ -28,6 +28,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(SearchViewModel.class)) {
             return (T) new SearchViewModel(repository, resourcesProvider);
+        } else if (modelClass.isAssignableFrom(UserViewModel.class)) {
+            return (T) new UserViewModel(repository, resourcesProvider);
         }
         throw new RuntimeException("Unknown viewModel class");
     }

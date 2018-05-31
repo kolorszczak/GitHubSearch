@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import mihau.eu.githubsearch.model.Result;
+import mihau.eu.githubsearch.model.User;
 import mihau.eu.githubsearch.utils.providers.scheduler.SchedulerProvider;
 
 public class GitHubRepository {
@@ -22,6 +23,12 @@ public class GitHubRepository {
                 .zip(apiService.searchRepositories(query, currentRepositoryPage),
                         apiService.searchUsers(query, currentUserPage),
                         Result::new)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui());
+    }
+
+    public Observable<User> getUser(String userName) {
+        return apiService.searchUser(userName)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui());
     }

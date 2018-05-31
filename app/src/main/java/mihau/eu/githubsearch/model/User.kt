@@ -16,6 +16,8 @@ data class User(
         val organizationsUrl: String,
         val reposUrl: String,
         val receivedEventsUrl: String,
+        val followers: Int,
+        val publicRepos: Int,
         val type: String,
         val score: Double
 ) : Parcelable
