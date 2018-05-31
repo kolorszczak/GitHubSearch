@@ -8,12 +8,14 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.widget.ImageView;
 
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
+import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
 import com.mikepenz.fastadapter.utils.ComparableItemListImpl;
 import com.mikepenz.fastadapter_extensions.items.ProgressItem;
 import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListener;
@@ -21,61 +23,66 @@ import com.mikepenz.fastadapter_extensions.scroll.EndlessRecyclerOnScrollListene
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import mihau.eu.githubsearch.R;
 import mihau.eu.githubsearch.base.BaseActivity;
 import mihau.eu.githubsearch.databinding.ActivitySearchBinding;
-import mihau.eu.githubsearch.model.Repository;
-import mihau.eu.githubsearch.model.User;
 import mihau.eu.githubsearch.utils.list.AscendingComparator;
 import mihau.eu.githubsearch.utils.list.RxSearchObservable;
 import mihau.eu.githubsearch.utils.list.VerticalSpaceItemDecoration;
-import mihau.eu.githubsearch.utils.list.item.RepositoryItem;
 import mihau.eu.githubsearch.utils.list.item.UserItem;
-import mihau.eu.githubsearch.utils.manager.AppUtils;
-import mihau.eu.githubsearch.utils.providers.AppResourcesProvider;
-import mihau.eu.githubsearch.viewmodel.GitHubViewModel;
+import mihau.eu.githubsearch.utils.providers.resources.ResourceProvider;
+import mihau.eu.githubsearch.viewmodel.SearchViewModel;
+import mihau.eu.githubsearch.viewmodel.ViewModelFactory;
 
 public class SearchActivity extends BaseActivity {
 
     private static final String TAG = SearchActivity.class.getSimpleName();
+
+    @Inject
+    ViewModelFactory viewModelFactory;
+    @Inject
+    ResourceProvider resourceProvider;
 
     public FastAdapter fastAdapter;
     public ItemAdapter itemAdapter;
     public ItemAdapter<ProgressItem> footerAdapter;
     public VerticalSpaceItemDecoration itemDecoration;
 
-    private GitHubViewModel viewModel;
+    private SearchViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         ActivitySearchBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
-        viewModel = new GitHubViewModel(new AppResourcesProvider(this));
+        viewModel = viewModelFactory.get(SearchViewModel.class, this);
         binding.setViewModel(viewModel);
         setupAdapters(this, binding.recyclerView);
         setPaging(binding.recyclerView);
         setupSearchVIew(binding.searchView);
     }
 
-    private void handleError(Context context, Throwable throwable) {
-        if (AppUtils.parseCode(throwable) == 503) {
-            viewModel.error.set(context.getString(R.string.noInternet));
+    private void handleError(Throwable throwable) {
+        if (resourceProvider.getErrorCode(throwable) == 503) {
+            viewModel.error.set(resourceProvider.getString(R.string.noInternet));
             viewModel.errorImgResId.set(R.drawable.im_internet);
             viewModel.isError.set(true);
-        } else if (viewModel.currentRepositoryPage == 1 && viewModel.currentUserPage == 1 && AppUtils.parseCode(throwable) >= 400) {
-            viewModel.error.set(context.getString(R.string.emptyContent));
+        } else if (viewModel.currentRepositoryPage == 1 && viewModel.currentUserPage == 1 && resourceProvider.getErrorCode(throwable) >= 400) {
+            viewModel.error.set(resourceProvider.getString(R.string.emptyContent));
             viewModel.errorImgResId.set(R.drawable.im_empty);
             viewModel.isError.set(true);
         }
 
-        new AlertDialog.Builder(context)
-                .setTitle(context.getString(R.string.error))
-                .setMessage(AppUtils.parseMessage(throwable)).show();
+        new AlertDialog.Builder(this)
+                .setTitle(resourceProvider.getString(R.string.error))
+                .setMessage(resourceProvider.getErrorMessage(throwable)).show();
     }
 
+    @SuppressWarnings("unchecked")
     @SuppressLint("CheckResult")
     private void setupSearchVIew(SearchView view) {
         RxSearchObservable.fromView(view)
@@ -95,12 +102,8 @@ public class SearchActivity extends BaseActivity {
                             break;
                         case SUCCESS:
                             footerAdapter.clear();
-                            for (User user : viewModel.users) {
-                                itemAdapter.add(new UserItem(user));
-                            }
-                            for (Repository repository : viewModel.repositories) {
-                                itemAdapter.add(new RepositoryItem(repository));
-                            }
+                            DiffUtil.DiffResult diff = FastAdapterDiffUtil.calculateDiff(itemAdapter, viewModel.getList());
+                            FastAdapterDiffUtil.set(itemAdapter, diff);
                             break;
                         case CLEAR:
                             itemAdapter.clear();
@@ -108,7 +111,7 @@ public class SearchActivity extends BaseActivity {
                             break;
                         case ERROR:
                             footerAdapter.clear();
-                            handleError(SearchActivity.this, searchEvent.error);
+                            handleError(searchEvent.error);
                             break;
                     }
                 });
@@ -132,12 +135,15 @@ public class SearchActivity extends BaseActivity {
         });
     }
 
+    @SuppressWarnings("unchecked")
     private void setupAdapters(Context context, RecyclerView recyclerView) {
         itemAdapter = new ItemAdapter<>(new ComparableItemListImpl<>(new AscendingComparator()));
         footerAdapter = new ItemAdapter<>();
         itemDecoration = new VerticalSpaceItemDecoration();
 
+
         fastAdapter = FastAdapter.with(Arrays.asList(itemAdapter, footerAdapter));
+        FastAdapterDiffUtil.set(itemAdapter, viewModel.getList());
         fastAdapter.withOnClickListener((v, adapter, item, position) -> {
             if (item instanceof UserItem && ((UserItem) item).user != null) {
                 context.startActivity(new Intent(context, DescriptionActivity.class).putExtra("user", ((UserItem) item).user));

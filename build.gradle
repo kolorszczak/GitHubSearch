@@ -1,6 +1,21 @@
 buildscript {
-    ext.kotlin_version = '1.2.41'
-    
+    ext.KotlinVer = '1.2.41'
+    ext.SupportVer = '27.1.1'
+    ext.LifecycleVer = '1.1.1'
+    ext.RetrofitVer = '2.4.0'
+    ext.OkHttpVer = '3.10.0'
+    ext.StethoVer = '1.5.0'
+    ext.RxJavaVer = '2.1.14'
+    ext.RxAndroidVer = '2.0.2'
+    ext.RxPermissionVer = '0.9.5'
+    ext.FastAdapterVer = '3.2.5'
+    ext.GsonVer = '2.8.5'
+    ext.MaterializeVer = '1.1.2'
+    ext.GlideVer = '4.7.1'
+    ext.GlideTransformationsVer = '3.3.0'
+    ext.DaggerVer = '2.16'
+    ext.JavaXVer = '1.0'
+
     repositories {
         google()
         jcenter()
@@ -9,7 +24,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KotlinVer"
     }
 }
 

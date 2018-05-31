@@ -17,4 +17,17 @@ public class SearchEvent {
     public enum Type {
         LOADING, SUCCESS, CLEAR, ERROR
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (getClass() != o.getClass()) return false;
+
+        SearchEvent searchEvent = (SearchEvent) o;
+        return type.equals(searchEvent.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return 6 * type.hashCode();
+    }
 }

@@ -41,6 +41,7 @@ public class UserItem extends AbstractItem<UserItem, UserItem.ViewHolder> {
         return user.getId();
     }
 
+    @NonNull
     @Override
     public UserItem.ViewHolder getViewHolder(View v) {
         return new UserItem.ViewHolder(v);

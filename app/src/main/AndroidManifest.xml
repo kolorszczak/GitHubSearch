@@ -14,9 +14,9 @@
 
         <activity
             android:name=".view.SearchActivity"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme.Launcher"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:screenOrientation="sensorPortrait">
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -25,7 +25,7 @@
 
         <activity
             android:name=".view.DescriptionActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:screenOrientation="sensorPortrait"/>
+            android:screenOrientation="sensorPortrait"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
     </application>
 </manifest>

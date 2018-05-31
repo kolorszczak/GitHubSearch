@@ -41,6 +41,7 @@ public class RepositoryItem extends AbstractItem<RepositoryItem, RepositoryItem.
         return repository.getId();
     }
 
+    @NonNull
     @Override
     public RepositoryItem.ViewHolder getViewHolder(View v) {
         return new RepositoryItem.ViewHolder(v);

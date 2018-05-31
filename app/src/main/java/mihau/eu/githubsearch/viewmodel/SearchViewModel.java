@@ -1,28 +1,31 @@
 package mihau.eu.githubsearch.viewmodel;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ObservableLong;
 
+import com.mikepenz.fastadapter.items.AbstractItem;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import javax.inject.Inject;
+
 import io.reactivex.subjects.PublishSubject;
 import mihau.eu.githubsearch.R;
-import mihau.eu.githubsearch.api.RestClient;
+import mihau.eu.githubsearch.api.GitHubRepository;
 import mihau.eu.githubsearch.model.Repository;
-import mihau.eu.githubsearch.model.Result;
 import mihau.eu.githubsearch.model.User;
-import mihau.eu.githubsearch.utils.providers.AppResourcesProvider;
+import mihau.eu.githubsearch.utils.list.item.RepositoryItem;
+import mihau.eu.githubsearch.utils.list.item.UserItem;
+import mihau.eu.githubsearch.utils.providers.resources.ResourceProvider;
 
-public class GitHubViewModel {
+public class SearchViewModel extends ViewModel {
 
-    private static final String TAG = GitHubViewModel.class.getSimpleName();
+    private static final String TAG = SearchViewModel.class.getSimpleName();
 
     public ObservableField<String> keyword = new ObservableField<>();
 
@@ -35,18 +38,39 @@ public class GitHubViewModel {
     public ObservableBoolean isLoading = new ObservableBoolean(false);
     public Integer currentUserPage = 1;
     public Integer currentRepositoryPage = 1;
-    public List<Repository> repositories = new ArrayList<>();
-    public List<User> users = new ArrayList<>();
 
-    private AppResourcesProvider resourcesProvider;
     public PublishSubject<SearchEvent> searchEventPublishSubject = PublishSubject.create();
 
-    public GitHubViewModel(AppResourcesProvider resourcesProvider) {
-        this.resourcesProvider = resourcesProvider;
+    private List<Repository> repositories = new ArrayList<>();
+    private List<User> users = new ArrayList<>();private GitHubRepository gitHubRepository;
+    private ResourceProvider resourcesProvider;
 
+
+    @Inject
+    public SearchViewModel(GitHubRepository gitHubRepository, ResourceProvider resourcesProvider) {
+        this.gitHubRepository = gitHubRepository;
+        this.resourcesProvider = resourcesProvider;
         this.isError.set(true);
         this.error.set(resourcesProvider.getString(R.string.emptyContent));
         this.errorImgResId.set(R.drawable.im_empty);
+    }
+
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<? extends AbstractItem> getList() {
+        List list = new ArrayList();
+        for (Repository repository : repositories) {
+            list.add(new RepositoryItem(repository));
+        }
+        for (User user : users) {
+            list.add(new UserItem(user));
+        }
+        return list;
     }
 
     public void clear() {
@@ -80,17 +104,11 @@ public class GitHubViewModel {
 
             searchEventPublishSubject.onNext(new SearchEvent(SearchEvent.Type.LOADING));
 
-            Observable
-                    .zip(RestClient.getInstance().searchRepositories(query, currentRepositoryPage),
-                            RestClient.getInstance().searchUsers(query, currentUserPage),
-                            (repositoryResponse, userResponse) -> {
-                                userTotal.set(userResponse.getTotalCount());
-                                repositoryTotal.set(repositoryResponse.getTotalCount());
-                                return new Result(repositoryResponse, userResponse);
-                            })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+
+            gitHubRepository.getQuery(query, currentRepositoryPage, currentUserPage)
                     .subscribe(result -> {
+                        userTotal.set(result.getUsers().getTotalCount());
+                        repositoryTotal.set(result.getRepositories().getTotalCount());
                         repositories.addAll(result.getRepositories().getItems());
                         users.addAll(result.getUsers().getItems());
                         searchEventPublishSubject.onNext(new SearchEvent(SearchEvent.Type.SUCCESS));
