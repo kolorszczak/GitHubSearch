@@ -51,14 +51,9 @@ public class SearchViewModel extends ViewModel {
         this.gitHubRepository = gitHubRepository;
         this.resourcesProvider = resourcesProvider;
         this.isError.set(true);
+        this.keyword.set("");
         this.error.set(resourcesProvider.getString(R.string.emptyContent));
         this.errorImgResId.set(R.drawable.im_empty);
-    }
-
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
     }
 
     @SuppressWarnings("unchecked")
